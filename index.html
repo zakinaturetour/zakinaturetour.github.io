@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaki Nature Tours - رحلات الطبيعة</title>
+    <title>Zaki Nature Tours - Adventure Trips</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             padding: 0 20px;
         }
         
-        /* Header بسيط */
+        /* Header */
         .header {
             background: #2e8b57;
             color: white;
@@ -42,7 +42,30 @@
             margin-top: 5px;
         }
         
-        /* Navigation سهل */
+        /* Language Switcher */
+        .language-switcher {
+            text-align: center;
+            background: #1f6b44;
+            padding: 10px 0;
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 20px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: #2e8b57;
+        }
+        
+        /* Navigation */
         .nav {
             background: #1f6b44;
             padding: 15px 0;
@@ -55,8 +78,16 @@
             margin: 0 15px;
             font-size: 1.1em;
         }
+
+        /* Content Sections - Initially hidden */
+        .language-content {
+            display: none;
+        }
         
-        /* الصور */
+        .language-content.active {
+            display: block;
+        }
+        
         .photo-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -84,8 +115,7 @@
             margin-bottom: 10px;
         }
         
-        /* الخدمات */
-        .services {
+        .services, .pricing, .contact {
             background: white;
             padding: 40px 20px;
             margin: 30px 0;
@@ -93,29 +123,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .service-item {
+        .service-item, .price-item {
             background: #f8f9fa;
             padding: 20px;
             margin: 15px 0;
             border-radius: 8px;
             border-right: 4px solid #2e8b57;
-        }
-        
-        /* الأسعار */
-        .pricing {
-            background: white;
-            padding: 40px 20px;
-            margin: 30px 0;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .price-item {
-            background: #e8f5e8;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-            border: 2px solid #2e8b57;
         }
         
         .price {
@@ -125,14 +138,10 @@
             margin: 10px 0;
         }
         
-        /* الاتصال */
         .contact {
             background: #2e8b57;
             color: white;
-            padding: 40px 20px;
             text-align: center;
-            margin: 30px 0;
-            border-radius: 10px;
         }
         
         .contact-info {
@@ -141,7 +150,7 @@
             margin: 20px 0;
         }
         
-        .whatsapp-btn {
+        .whatsapp-btn, .call-btn {
             display: inline-block;
             background: #25D366;
             color: white;
@@ -154,19 +163,10 @@
         }
         
         .call-btn {
-            display: inline-block;
-            background: #2e8b57;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            margin: 10px;
-            font-weight: bold;
+            background: transparent;
             border: 2px solid white;
         }
         
-        /* الفوتر */
         .footer {
             background: #1a1a1a;
             color: white;
@@ -175,7 +175,6 @@
             margin-top: 50px;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .nav a {
                 display: block;
@@ -189,129 +188,327 @@
     </style>
 </head>
 <body>
-    <!-- الهيدر -->
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">🌿 Zaki Nature Tours</div>
-            <div class="tagline">رحلات طبيعة لا تنسى في جبال الأطلس</div>
+            <div class="tagline" id="main-tagline">Adventure Trips in Morocco</div>
         </div>
     </header>
     
-    <!-- التنقل -->
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('fr')">Français</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+        <button class="lang-btn" onclick="switchLanguage('ar')">العربية</button>
+    </div>
+    
+    <!-- Navigation -->
     <nav class="nav">
         <div class="container">
-            <a href="#photos">الصور</a>
-            <a href="#services">الخدمات</a>
-            <a href="#pricing">الأسعار</a>
-            <a href="#contact">الاتصال</a>
+            <a href="#photos" id="nav-photos">Photos</a>
+            <a href="#services" id="nav-services">Services</a>
+            <a href="#pricing" id="nav-pricing">Prices</a>
+            <a href="#contact" id="nav-contact">Contact</a>
         </div>
     </nav>
     
     <div class="container">
-        <!-- معرض الصور -->
-        <section id="photos">
-            <h2 style="text-align: center; margin: 30px 0; color: #2e8b57;">📸 معرض الصور</h2>
-            <div class="photo-gallery">
-                <div class="photo-item">
-                    <div class="photo-placeholder">
-                        [ صورة 1 - جبال الأطلس ]
+        <!-- French Content -->
+        <div id="fr-content" class="language-content active">
+            <!-- Photos -->
+            <section id="photos">
+                <h2 style="text-align: center; margin: 30px 0; color: #2e8b57;">📸 Galerie Photos</h2>
+                <div class="photo-gallery">
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 1 - Montagnes ]</div>
+                        <p>Vues magnifiques des montagnes de l'Atlas</p>
                     </div>
-                    <p>مناظر خلابة من جبال الأطلس</p>
-                </div>
-                <div class="photo-item">
-                    <div class="photo-placeholder">
-                        [ صورة 2 - التخييم ]
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 2 - Camping ]</div>
+                        <p>Nuits de camping sous les étoiles</p>
                     </div>
-                    <p>ليالي التخييم تحت النجوم</p>
-                </div>
-                <div class="photo-item">
-                    <div class="photo-placeholder">
-                        [ صورة 3 - القرى ]
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 3 - Villages ]</div>
+                        <p>Visite des villages berbères</p>
                     </div>
-                    <p>زيارة القرى الأمازيغية</p>
                 </div>
-            </div>
-        </section>
-        
-        <!-- الخدمات -->
-        <section id="services" class="services">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">🚀 خدماتنا</h2>
+            </section>
             
-            <div class="service-item">
-                <h3>🏔️ رحلات جبال الأطلس</h3>
-                <p>استكشف جمال الطبيعة مع مرشدين محليين ذوي خبرة</p>
-            </div>
+            <!-- Services -->
+            <section id="services" class="services">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">🚀 Nos Services</h2>
+                
+                <div class="service-item">
+                    <h3>🏔️ Randonnées Atlas</h3>
+                    <p>Explorez la beauté de la nature avec des guides locaux expérimentés</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>⛺ Camping sous les étoiles</h3>
+                    <p>Nuits magiques au cœur de la nature avec repas traditionnels</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>📸 Séance photo</h3>
+                    <p>Photos professionnelles pour immortaliser vos souvenirs</p>
+                </div>
+            </section>
             
-            <div class="service-item">
-                <h3>⛺ تخييم تحت النجوم</h3>
-                <p>ليالي ساحرة في أحضان الطبيعة مع وجبات تقليدية</p>
-            </div>
+            <!-- Pricing -->
+            <section id="pricing" class="pricing">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">💰 Nos Tarifs</h2>
+                
+                <div class="price-item">
+                    <h3>Forfait Basique</h3>
+                    <p>Excursion d'une journée</p>
+                    <div class="price">200 - 300 DH</div>
+                    <p>📍 Guide + Transport + Déjeuner</p>
+                </div>
+                
+                <div class="price-item">
+                    <h3>Forfait Standard</h3>
+                    <p>2 jours - 1 nuit</p>
+                    <div class="price">500 - 700 DH</div>
+                    <p>📍 Guide + Transport + Repas + Hébergement</p>
+                </div>
+            </section>
             
-            <div class="service-item">
-                <h3>📸 تصوير احترافي</h3>
-                <p>توثيق رحلتك بصور احترافية تخلد الذكريات</p>
-            </div>
+            <!-- Contact -->
+            <section id="contact" class="contact">
+                <h2 style="margin-bottom: 30px;">📞 Contactez-nous</h2>
+                
+                <div class="contact-info">
+                    <p>📱 Téléphone: <strong>+212-659399891</strong></p>
+                    <p>✉️ Email: <strong>contactzakitour02@gmail.com</strong></p>
+                    <p>📍 Adresse: <strong>Marrakech, Maroc</strong></p>
+                </div>
+                
+                <div>
+                    <a href="https://wa.me/2126XXXXXXX" class="whatsapp-btn">💬 WhatsApp</a>
+                    <a href="tel:+212659399891" class="call-btn">📞 Appeler</a>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 1.1em;">
+                    ⏰ Disponible de 8h à 20h
+                </p>
+            </section>
+        </div>
+
+        <!-- English Content -->
+        <div id="en-content" class="language-content">
+            <!-- Photos -->
+            <section id="photos">
+                <h2 style="text-align: center; margin: 30px 0; color: #2e8b57;">📸 Photo Gallery</h2>
+                <div class="photo-gallery">
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 1 - Mountains ]</div>
+                        <p>Stunning views of the Atlas Mountains</p>
+                    </div>
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 2 - Camping ]</div>
+                        <p>Camping nights under the stars</p>
+                    </div>
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ Photo 3 - Villages ]</div>
+                        <p>Berber villages visit</p>
+                    </div>
+                </div>
+            </section>
             
-            <div class="service-item">
-                <h3>🌅 جولات شروق وغروب</h3>
-                <p>شاهد أجمل الشروق والغروب في مواقع خلابة</p>
-            </div>
-        </section>
-        
-        <!-- الأسعار -->
-        <section id="pricing" class="pricing">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">💰 باقات الأسعار</h2>
+            <!-- Services -->
+            <section id="services" class="services">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">🚀 Our Services</h2>
+                
+                <div class="service-item">
+                    <h3>🏔️ Atlas Treks</h3>
+                    <p>Explore nature's beauty with experienced local guides</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>⛺ Star Camping</h3>
+                    <p>Magical nights in nature with traditional meals</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>📸 Photo Sessions</h3>
+                    <p>Professional photos to immortalize your memories</p>
+                </div>
+            </section>
             
-            <div class="price-item">
-                <h3>الباقة الأساسية</h3>
-                <p>رحلة نهارية - 1 يوم</p>
-                <div class="price">200 - 300 درهم</div>
-                <p>📍 مرشد + نقل + وجبة غداء</p>
-            </div>
+            <!-- Pricing -->
+            <section id="pricing" class="pricing">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">💰 Our Prices</h2>
+                
+                <div class="price-item">
+                    <h3>Basic Package</h3>
+                    <p>One-day excursion</p>
+                    <div class="price">200 - 300 MAD</div>
+                    <p>📍 Guide + Transport + Lunch</p>
+                </div>
+                
+                <div class="price-item">
+                    <h3>Standard Package</h3>
+                    <p>2 days - 1 night</p>
+                    <div class="price">500 - 700 MAD</div>
+                    <p>📍 Guide + Transport + Meals + Accommodation</p>
+                </div>
+            </section>
             
-            <div class="price-item">
-                <h3>الباقة المتوسطة</h3>
-                <p>2 يوم - 1 ليلة</p>
-                <div class="price">500 - 700 درهم</div>
-                <p>📍 مرشد + نقل + وجبات + إقامة</p>
-            </div>
+            <!-- Contact -->
+            <section id="contact" class="contact">
+                <h2 style="margin-bottom: 30px;">📞 Contact Us</h2>
+                
+                <div class="contact-info">
+                    <p>📱 Phone: <strong>+212-6XX-XXXXXX</strong></p>
+                    <p>✉️ Email: <strong>contact@zakinature.com</strong></p>
+                    <p>📍 Location: <strong>Marrakech, Morocco</strong></p>
+                </div>
+                
+                <div>
+                    <a href="https://wa.me/2126XXXXXXX" class="whatsapp-btn">💬 WhatsApp</a>
+                    <a href="tel:+2126XXXXXXX" class="call-btn">📞 Call Now</a>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 1.1em;">
+                    ⏰ Available from 8AM to 8PM
+                </p>
+            </section>
+        </div>
+
+        <!-- Arabic Content -->
+        <div id="ar-content" class="language-content">
+            <!-- Photos -->
+            <section id="photos">
+                <h2 style="text-align: center; margin: 30px 0; color: #2e8b57;">📸 معرض الصور</h2>
+                <div class="photo-gallery">
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ صورة 1 - جبال ]</div>
+                        <p>مناظر خلابة من جبال الأطلس</p>
+                    </div>
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ صورة 2 - تخييم ]</div>
+                        <p>ليالي التخييم تحت النجوم</p>
+                    </div>
+                    <div class="photo-item">
+                        <div class="photo-placeholder">[ صورة 3 - قرى ]</div>
+                        <p>زيارة القرى الأمازيغية</p>
+                    </div>
+                </div>
+            </section>
             
-            <div class="price-item">
-                <h3>الباقة المميزة</h3>
-                <p>3 أيام - 2 ليلة</p>
-                <div class="price">900 - 1200 درهم</div>
-                <p>📍 مرشد خاص + نقل فاخر + تصوير + كل الوجبات</p>
-            </div>
-        </section>
-        
-        <!-- الاتصال -->
-        <section id="contact" class="contact">
-            <h2 style="margin-bottom: 30px;">📞 تواصل معنا</h2>
+            <!-- Services -->
+            <section id="services" class="services">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">🚀 خدماتنا</h2>
+                
+                <div class="service-item">
+                    <h3>🏔️ رحلات الأطلس</h3>
+                    <p>استكشف جمال الطبيعة مع مرشدين محليين</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>⛺ تخييم نجمي</h3>
+                    <p>ليالي ساحرة في الطبيعة مع وجبات تقليدية</p>
+                </div>
+                
+                <div class="service-item">
+                    <h3>📸 جلسات تصوير</h3>
+                    <p>صور احترافية تخلد ذكرياتك</p>
+                </div>
+            </section>
             
-            <div class="contact-info">
-                <p>📱 الهاتف: <strong>+212-659399891</strong></p>
-                <p>✉️ الإيميل: <strong>contact@ zakitour02@gmail.com</strong></p>
-                <p>📍 الموقع: <strong>مراكش، المغرب</strong></p>
-            </div>
+            <!-- Pricing -->
+            <section id="pricing" class="pricing">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2e8b57;">💰 أسعارنا</h2>
+                
+                <div class="price-item">
+                    <h3>الباقة الأساسية</h3>
+                    <p>رحلة نهارية</p>
+                    <div class="price">200 - 300 درهم</div>
+                    <p>📍 مرشد + نقل + غداء</p>
+                </div>
+                
+                <div class="price-item">
+                    <h3>الباقة المتوسطة</h3>
+                    <p>2 يوم - 1 ليلة</p>
+                    <div class="price">500 - 700 درهم</div>
+                    <p>📍 مرشد + نقل + وجبات + إقامة</p>
+                </div>
+            </section>
             
-            <div>
-                <a href="https://wa.me/212659399891" class="whatsapp-btn">💬 واتساب</a>
-                <a href="tel:+212659399891" class="call-btn">📞 اتصل الآن</a>
-            </div>
-            
-            <p style="margin-top: 20px; font-size: 1.1em;">
-                ⏰ متاحون من 8 صباحاً إلى 8 مساءً
-            </p>
-        </section>
+            <!-- Contact -->
+            <section id="contact" class="contact">
+                <h2 style="margin-bottom: 30px;">📞 اتصل بنا</h2>
+                
+                <div class="contact-info">
+                    <p>📱 الهاتف: <strong>+212-659399891</strong></p>
+                    <p>✉️ الإيميل: <strong>contactzakitour02@gmail.com</strong></p>
+                    <p>📍 الموقع: <strong>مراكش، المغرب</strong></p>
+                </div>
+                
+                <div>
+                    <a href="https://wa.me/2126XXXXXXX" class="whatsapp-btn">💬 واتساب</a>
+                    <a href="tel:+212659399891" class="call-btn">📞 اتصل الآن</a>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 1.1em;">
+                    ⏰ متاحون من 8 صباحاً إلى 8 مساءً
+                </p>
+            </section>
+        </div>
     </div>
     
-    <!-- الفوتر -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p>🌿 Zaki Nature Tours - 2024</p>
-            <p>رحلات طبيعة مغربية أصيلة</p>
-            <p style="margin-top: 15px; opacity: 0.8;">صنع بكل حب لزوار الطبيعة 🌍</p>
+            <p id="footer-text">Adventure Trips in Morocco</p>
         </div>
     </footer>
+
+    <script>
+        function switchLanguage(lang) {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.language-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Show selected language content
+            document.getElementById(lang + '-content').classList.add('active');
+            
+            // Update navigation texts
+            updateNavigation(lang);
+            updateFooter(lang);
+        }
+        
+        function updateNavigation(lang) {
+            const navTexts = {
+                'fr': ['Photos', 'Services', 'Tarifs', 'Contact'],
+                'en': ['Photos', 'Services', 'Prices', 'Contact'],
+                'ar': ['الصور', 'الخدمات', 'الأسعار', 'الاتصال']
+            };
+            
+            const navLinks = document.querySelectorAll('.nav a');
+            navTexts[lang].forEach((text, index) => {
+                navLinks[index].textContent = text;
+            });
+        }
+        
+        function updateFooter(lang) {
+            const footerTexts = {
+                'fr': 'Voyages d\'Aventure au Maroc',
+                'en': 'Adventure Trips in Morocco',
+                'ar': 'رحلات مغامرات في المغرب'
+            };
+            
+            document.getElementById('footer-text').textContent = footerTexts[lang];
+        }
+    </script>
 </body>
 </html>
